@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище warModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="element">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Polarity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="warframe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="sex" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="health" Type="int" Nullable="false" />
+          <Property Name="shields" Type="int" Nullable="false" />
+          <Property Name="armor" Type="int" Nullable="false" />
+          <Property Name="energy" Type="int" Nullable="false" />
+          <Property Name="sprint_speed" Type="float" Nullable="false" />
+          <Property Name="element_id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="warframe_polarity">
+          <Key>
+            <PropertyRef Name="warframe_id" />
+            <PropertyRef Name="polarity_id" />
+          </Key>
+          <Property Name="warframe_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="polarity_id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_warframe_element">
+          <End Role="element" Type="Self.element" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe" Type="Self.warframe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="element">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe">
+              <PropertyRef Name="element_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warframe_polarity_Polarity">
+          <End Role="Polarity" Type="Self.Polarity" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe_polarity" Type="Self.warframe_polarity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polarity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe_polarity">
+              <PropertyRef Name="polarity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warframe_polarity_warframe">
+          <End Role="warframe" Type="Self.warframe" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe_polarity" Type="Self.warframe_polarity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="warframe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe_polarity">
+              <PropertyRef Name="warframe_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище warModelContainer">
+          <EntitySet Name="element" EntityType="Self.element" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Polarity" EntityType="Self.Polarity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="warframe" EntityType="Self.warframe" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="warframe_polarity" EntityType="Self.warframe_polarity" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_warframe_element" Association="Self.FK_warframe_element">
+            <End Role="element" EntitySet="element" />
+            <End Role="warframe" EntitySet="warframe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warframe_polarity_Polarity" Association="Self.FK_warframe_polarity_Polarity">
+            <End Role="Polarity" EntitySet="Polarity" />
+            <End Role="warframe_polarity" EntitySet="warframe_polarity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warframe_polarity_warframe" Association="Self.FK_warframe_polarity_warframe">
+            <End Role="warframe" EntitySet="warframe" />
+            <End Role="warframe_polarity" EntitySet="warframe_polarity" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="warModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="element">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="warframe" Relationship="Self.FK_warframe_element" FromRole="element" ToRole="warframe" />
+        </EntityType>
+        <EntityType Name="Polarity">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="warframe_polarity" Relationship="Self.FK_warframe_polarity_Polarity" FromRole="Polarity" ToRole="warframe_polarity" />
+        </EntityType>
+        <EntityType Name="warframe">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Guid" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="sex" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="health" Type="Int32" Nullable="false" />
+          <Property Name="shields" Type="Int32" Nullable="false" />
+          <Property Name="armor" Type="Int32" Nullable="false" />
+          <Property Name="energy" Type="Int32" Nullable="false" />
+          <Property Name="sprint_speed" Type="Double" Nullable="false" />
+          <Property Name="element_id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="element" Relationship="Self.FK_warframe_element" FromRole="warframe" ToRole="element" />
+          <NavigationProperty Name="warframe_polarity" Relationship="Self.FK_warframe_polarity_warframe" FromRole="warframe" ToRole="warframe_polarity" />
+        </EntityType>
+        <EntityType Name="warframe_polarity">
+          <Key>
+            <PropertyRef Name="warframe_id" />
+            <PropertyRef Name="polarity_id" />
+          </Key>
+          <Property Name="warframe_id" Type="Guid" Nullable="false" />
+          <Property Name="polarity_id" Type="Guid" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Polarity" Relationship="Self.FK_warframe_polarity_Polarity" FromRole="warframe_polarity" ToRole="Polarity" />
+          <NavigationProperty Name="warframe" Relationship="Self.FK_warframe_polarity_warframe" FromRole="warframe_polarity" ToRole="warframe" />
+        </EntityType>
+        <Association Name="FK_warframe_element">
+          <End Role="element" Type="Self.element" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe" Type="Self.warframe" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="element">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe">
+              <PropertyRef Name="element_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warframe_polarity_Polarity">
+          <End Role="Polarity" Type="Self.Polarity" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe_polarity" Type="Self.warframe_polarity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Polarity">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe_polarity">
+              <PropertyRef Name="polarity_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_warframe_polarity_warframe">
+          <End Role="warframe" Type="Self.warframe" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="warframe_polarity" Type="Self.warframe_polarity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="warframe">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="warframe_polarity">
+              <PropertyRef Name="warframe_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="warEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="element" EntityType="Self.element" />
+          <EntitySet Name="Polarity" EntityType="Self.Polarity" />
+          <EntitySet Name="warframe" EntityType="Self.warframe" />
+          <EntitySet Name="warframe_polarity" EntityType="Self.warframe_polarity" />
+          <AssociationSet Name="FK_warframe_element" Association="Self.FK_warframe_element">
+            <End Role="element" EntitySet="element" />
+            <End Role="warframe" EntitySet="warframe" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warframe_polarity_Polarity" Association="Self.FK_warframe_polarity_Polarity">
+            <End Role="Polarity" EntitySet="Polarity" />
+            <End Role="warframe_polarity" EntitySet="warframe_polarity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_warframe_polarity_warframe" Association="Self.FK_warframe_polarity_warframe">
+            <End Role="warframe" EntitySet="warframe" />
+            <End Role="warframe_polarity" EntitySet="warframe_polarity" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище warModelContainer" CdmEntityContainer="warEntities">
+          <EntitySetMapping Name="element">
+            <EntityTypeMapping TypeName="warModel.element">
+              <MappingFragment StoreEntitySet="element">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Polarity">
+            <EntityTypeMapping TypeName="warModel.Polarity">
+              <MappingFragment StoreEntitySet="Polarity">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="warframe">
+            <EntityTypeMapping TypeName="warModel.warframe">
+              <MappingFragment StoreEntitySet="warframe">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="sex" ColumnName="sex" />
+                <ScalarProperty Name="health" ColumnName="health" />
+                <ScalarProperty Name="shields" ColumnName="shields" />
+                <ScalarProperty Name="armor" ColumnName="armor" />
+                <ScalarProperty Name="energy" ColumnName="energy" />
+                <ScalarProperty Name="sprint_speed" ColumnName="sprint_speed" />
+                <ScalarProperty Name="element_id" ColumnName="element_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="warframe_polarity">
+            <EntityTypeMapping TypeName="warModel.warframe_polarity">
+              <MappingFragment StoreEntitySet="warframe_polarity">
+                <ScalarProperty Name="warframe_id" ColumnName="warframe_id" />
+                <ScalarProperty Name="polarity_id" ColumnName="polarity_id" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
