@@ -40,17 +40,11 @@ namespace warframeParse
             CreateChart(worksheet, Name, Energy, "Энергия", XlChartType.xlLineMarkers);
             workbook.SaveAs(expath);
             workbook.Close();
-            if (excelApp != null)
-            {
-                excelApp.Quit();
-                Marshal.ReleaseComObject(excelApp);
-            }
-
+            excelApp.Quit();
 
             Word.Application wordApp = new Word.Application();
-            object docpath = Environment.CurrentDirectory + @"\Разработка БД.doc";
+            object docpath = Environment.CurrentDirectory + @"\8И12_Панков_АИС_Разработка_БД_и_механизмов_наполненияdocx.docx";
             Document wDoc = wordApp.Documents.Add(ref docpath, false, WdNewDocumentType.wdNewBlankDocument, true);
-
 
             Workbook excelbook = excelApp.Workbooks.Open(expath);
             ChartObjects chartObjects = excelbook.Sheets["Лист2"].ChartObjects();
